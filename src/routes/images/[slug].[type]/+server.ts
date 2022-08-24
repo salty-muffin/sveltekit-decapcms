@@ -9,7 +9,9 @@ export const GET: RequestHandler = async ({ params }) => {
 		console.log(`[info] processing src/images/${params.slug}.${params.type}`);
 
 		if (image) {
-			return new Response(await image.toBuffer());
+			return new Response(await image.toBuffer(), {
+				headers: { 'Content-Type': `image/${(await image.metadata()).format}` }
+			});
 		}
 		throw error(500, 'image could not be opened properly');
 	} catch {

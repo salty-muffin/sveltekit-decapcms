@@ -3,4 +3,4 @@
 
 <!-- <a href="/markdown/demo-page">Link to the demo page</a> -->
 
-<img src="/images/demo-image.jpg" alt="demo" />
+<img src="/images/demo-image.jpg@w=100+fm=png.png" alt="demo" />
