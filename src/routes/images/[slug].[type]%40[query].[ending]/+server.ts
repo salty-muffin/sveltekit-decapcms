@@ -7,7 +7,7 @@ export const GET: RequestHandler = async ({ params }) => {
 		const image = sharp(`src/images/${params.slug}.${params.type}`);
 
 		console.log(
-			`[info] processing src/images/${params.slug}.${params.type}@${params.query}.${params.ending}`
+			`[info] processing image src/images/${params.slug}.${params.type}@${params.query}.${params.ending}`
 		);
 
 		// process query with the format '@p1=v1+p2=v2'

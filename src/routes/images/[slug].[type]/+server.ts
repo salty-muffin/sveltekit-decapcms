@@ -6,7 +6,7 @@ export const GET: RequestHandler = async ({ params }) => {
 	try {
 		const image = sharp(`src/images/${params.slug}.${params.type}`);
 
-		console.log(`[info] processing src/images/${params.slug}.${params.type}`);
+		console.log(`[info] processing image src/images/${params.slug}.${params.type}`);
 
 		if (image) {
 			return new Response(await image.toBuffer(), {
