@@ -1,2 +1,6 @@
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+
+<!-- <a href="/markdown/demo-page">Link to the demo page</a> -->
+
+<img src="/images/demo-image.jpg" alt="demo" />
