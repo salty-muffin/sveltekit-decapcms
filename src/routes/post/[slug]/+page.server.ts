@@ -2,7 +2,8 @@ import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import fs from 'fs';
 import fm from 'front-matter';
-import { remark } from 'remark';
+import { fromMarkdown } from 'mdast-util-from-markdown';
+// import { toHast } from 'mdast-util-to-hast';
 
 interface Demo {
 	title: string;
@@ -22,7 +23,8 @@ export const load: PageServerLoad = async ({ params }) => {
 				title: post.attributes.title,
 				description: post.attributes.description,
 				image: post.attributes.image,
-				body: remark().parse(post.body)
+				// body: toHast(fromMarkdown(post.body))
+				body: fromMarkdown(post.body)
 			};
 		}
 		throw error(500, 'something wrong with the markdown file');
