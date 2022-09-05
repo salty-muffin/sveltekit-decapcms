@@ -14,7 +14,7 @@ interface Demo {
 
 export const load: PageServerLoad = async ({ params }) => {
 	try {
-		const post = fm<Demo>(fs.readFileSync(`src/content/${params.slug}.md`, 'utf-8'));
+		const post = fm<Demo>(fs.readFileSync(`src/content/posts/${params.slug}.md`, 'utf-8'));
 
 		console.log(`[info] processing markdown src/content/${params.slug}.md`);
 
