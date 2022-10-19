@@ -3,7 +3,8 @@ import { error } from '@sveltejs/kit';
 import fs from 'fs';
 import fm from 'front-matter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
-// import { toHast } from 'mdast-util-to-hast';
+import { toHast } from 'mdast-util-to-hast';
+import { getImageProperties, addImagePropertiesToHast, reduceHast } from '$lib/helpers';
 
 interface Demo {
 	title: string;
@@ -19,12 +20,13 @@ export const load: PageServerLoad = async ({ params }) => {
 		console.log(`[info] processing markdown src/content/${params.slug}.md`);
 
 		if (post) {
+			const hast = toHast(fromMarkdown(post.body));
+
 			return {
 				title: post.attributes.title,
 				description: post.attributes.description,
-				image: post.attributes.image,
-				// body: toHast(fromMarkdown(post.body))
-				body: fromMarkdown(post.body)
+				image: await getImageProperties(post.attributes.image),
+				body: hast ? await addImagePropertiesToHast(reduceHast(hast)) : undefined
 			};
 		}
 		throw error(500, 'something wrong with the markdown file');

@@ -3,4 +3,4 @@
 
 <a href="/post/demo-page">Link to the demo page</a>
 
-<img src="/images/demo-image.jpg@w=100+fm=png.png" alt="demo" />
+<img src="/images/demo-image.jpg@w=100+fm=png.png" alt="demo" width="100" height="100" />
