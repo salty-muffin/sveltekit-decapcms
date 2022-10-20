@@ -1,10 +1,28 @@
 <script lang="ts">
-	import type { ImageOptions, ImageOptionsDefault, ImageOptionsCombined } from '$lib/types';
+	import type { ImageOptions } from '$lib/types';
 
 	interface ImageSet {
 		srcset: string;
 		type: string;
 		sizes: string;
+	}
+
+	interface ImageOptionsDefault {
+		sizes?: { width: number; maxWidth?: number }[];
+		loading: 'eager' | 'lazy';
+		quality: number;
+		formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
+		aspectRatio?: number;
+		query?: string;
+	}
+
+	interface ImageOptionsCombined {
+		sizes: { width: number; maxWidth?: number }[];
+		loading: 'eager' | 'lazy';
+		quality: number;
+		formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
+		aspectRatio?: number;
+		query?: string;
 	}
 
 	export let src: string | undefined;
