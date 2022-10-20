@@ -36,9 +36,9 @@
 		_options.sizes.forEach((size, index) => {
 			srcset += `${src}@w=${size.width}+${
 				_options.aspectRatio ? `h=${size.width / _options.aspectRatio}+` : ''
-			}${_options.query ? `${_options.query}+` : ''}fm=${format}+q=${
-				_options.quality
-			}.${_options} ${size.width}w`;
+			}${_options.query ? `${_options.query}+` : ''}fm=${format}+q=${_options.quality}.${format} ${
+				size.width
+			}w`;
 			if (index < _options.sizes.length - 1) srcset += ', ';
 		});
 
