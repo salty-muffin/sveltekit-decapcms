@@ -11,6 +11,7 @@ interface Demo {
 	description: string;
 	image: string;
 	draft: boolean;
+	optional?: string;
 }
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -26,6 +27,7 @@ export const load: PageServerLoad = async ({ params }) => {
 				title: post.attributes.title,
 				description: post.attributes.description,
 				image: await getImageProperties(post.attributes.image),
+				optional: post.attributes.optional,
 				body: hast ? await addImagePropertiesToHast(reduceHast(hast)) : undefined
 			};
 		}
