@@ -1,0 +1,29 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: src/images # Folder where user uploaded files should go
+public_folder: /images
+
+search: false
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
+collections:
+  # PARTICIPANT
+  - name: posts # Used in routes, e.g., /admin/collections/blog
+    identifier_field: name
+    label: Posts # Used in the UI
+    folder: src/content/posts # The path to the folder where the documents are stored
+    create: true # Allow users to create new documents in this collection
+    slug: '{{slug}}' # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Image, name: image, widget: image }
+      - { label: Draft, name: draft, widget: boolean, default: true }
+      - { label: Optional, name: optional, widget: string, required: false }
+      - { label: 'Content', name: 'body', widget: 'markdown' }
