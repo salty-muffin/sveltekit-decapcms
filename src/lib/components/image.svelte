@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ImageOptions } from '$lib/types';
+	import type { ImageOptions, ImageOptionsDefault, ImageOptionsCombined } from '$lib/types';
 
 	interface ImageSet {
 		srcset: string;
@@ -12,26 +12,34 @@
 	export let height: number | undefined;
 	export let alt: string | undefined;
 	export let options: ImageOptions;
+	const optionsDefault: ImageOptionsDefault = {
+		loading: 'eager',
+		quality: 80,
+		formats: ['webp', 'jpg']
+	};
+
+	const _options: ImageOptionsCombined = Object.assign({}, optionsDefault, options);
+
 	let className = '';
 	export { className as class };
 
 	let images: ImageSet[] = [];
 	// create a srcset, type & sizes for each format
 	let sizes_ = '';
-	options.sizes.forEach((size, index) => {
-		if (index < options.sizes.length - 1)
+	_options.sizes.forEach((size, index) => {
+		if (index < _options.sizes.length - 1)
 			sizes_ += `(max-width: ${size.maxWidth}px) ${size.width}px, `;
 		else sizes_ += `${size.width}px`;
 	});
-	options.formats.forEach((format) => {
+	_options.formats.forEach((format) => {
 		let srcset = '';
-		options.sizes.forEach((size, index) => {
+		_options.sizes.forEach((size, index) => {
 			srcset += `${src}@w=${size.width}+${
-				options.aspectRatio ? `h=${size.width / options.aspectRatio}+` : ''
-			}${options.query ? `${options.query}+` : ''}fm=${format}+q=${options.quality}.${format} ${
-				size.width
-			}w`;
-			if (index < options.sizes.length - 1) srcset += ', ';
+				_options.aspectRatio ? `h=${size.width / _options.aspectRatio}+` : ''
+			}${_options.query ? `${_options.query}+` : ''}fm=${format}+q=${
+				_options.quality
+			}.${_options} ${size.width}w`;
+			if (index < _options.sizes.length - 1) srcset += ', ';
 		});
 
 		let type = '';
@@ -63,15 +71,15 @@
 		{/each}
 		<img
 			class="image-component {className}"
-			loading={options.loading}
-			src="{src}@w={options.sizes[options.sizes.length - 1].width}+{options.aspectRatio
-				? `h=${options.sizes[options.sizes.length - 1].width / options.aspectRatio}+`
-				: ''}{options.query ? `${options.query}+` : ''}fm={options.formats[
-				options.formats.length - 1
-			]}+q={options.quality}.{options.formats[options.formats.length - 1]}"
+			loading={_options.loading}
+			src="{src}@w={_options.sizes[_options.sizes.length - 1].width}+{_options.aspectRatio
+				? `h=${_options.sizes[_options.sizes.length - 1].width / _options.aspectRatio}+`
+				: ''}{_options.query ? `${_options.query}+` : ''}fm={_options.formats[
+				_options.formats.length - 1
+			]}+q={_options.quality}.{_options.formats[_options.formats.length - 1]}"
 			{alt}
 			{width}
-			height={options.aspectRatio ? width && width / options.aspectRatio : height}
+			height={_options.aspectRatio ? width && width / _options.aspectRatio : height}
 			on:load
 		/>
 	</picture>

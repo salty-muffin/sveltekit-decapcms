@@ -7,10 +7,7 @@
 	export let data: PageData;
 
 	const options: ImageOptions = {
-		sizes: [{ width: 400, maxWidth: 400 }, { width: 640 }],
-		loading: 'eager',
-		quality: 80,
-		formats: ['webp', 'jpg']
+		sizes: [{ width: 400, maxWidth: 400 }, { width: 640 }]
 	};
 </script>
 

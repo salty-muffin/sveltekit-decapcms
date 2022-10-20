@@ -22,6 +22,24 @@ export interface Image {
 
 export interface ImageOptions {
 	sizes: { width: number; maxWidth?: number }[];
+	loading?: 'eager' | 'lazy';
+	quality?: number;
+	formats?: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
+	aspectRatio?: number;
+	query?: string;
+}
+
+export interface ImageOptionsDefault {
+	sizes?: { width: number; maxWidth?: number }[];
+	loading: 'eager' | 'lazy';
+	quality: number;
+	formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
+	aspectRatio?: number;
+	query?: string;
+}
+
+export interface ImageOptionsCombined {
+	sizes: { width: number; maxWidth?: number }[];
 	loading: 'eager' | 'lazy';
 	quality: number;
 	formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
