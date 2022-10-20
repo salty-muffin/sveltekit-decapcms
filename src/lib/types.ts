@@ -19,3 +19,12 @@ export interface Image {
 	width?: number;
 	height?: number;
 }
+
+export interface ImageOptions {
+	sizes: { width: number; maxWidth?: number }[];
+	loading: 'eager' | 'lazy';
+	quality: number;
+	formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
+	aspectRatio?: number;
+	query?: string;
+}

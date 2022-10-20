@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Image } from '$lib/types';
+	import type { ImageOptions } from '$lib/types';
 
 	interface ImageSet {
 		srcset: string;
@@ -7,31 +7,31 @@
 		sizes: string;
 	}
 
-	export let image: Image;
-	export let alt: string;
-	export let loading = 'eager';
-	export let sizes: { width: number; maxWidth?: number }[]; // smallest size should come first, last size will be without maxWidth
-	export let aspectRatio: number | undefined = undefined;
-	export let query: string | undefined = undefined;
-	export let formats = ['webp', 'jpg']; // fallback should come last
-	export let quality = 80;
+	export let src: string | undefined;
+	export let width: number | undefined;
+	export let height: number | undefined;
+	export let alt: string | undefined;
+	export let options: ImageOptions;
 	let className = '';
 	export { className as class };
 
 	let images: ImageSet[] = [];
 	// create a srcset, type & sizes for each format
 	let sizes_ = '';
-	sizes.forEach((size, index) => {
-		if (index < sizes.length - 1) sizes_ += `(max-width: ${size.maxWidth}px) ${size.width}px, `;
+	options.sizes.forEach((size, index) => {
+		if (index < options.sizes.length - 1)
+			sizes_ += `(max-width: ${size.maxWidth}px) ${size.width}px, `;
 		else sizes_ += `${size.width}px`;
 	});
-	formats.forEach((format) => {
+	options.formats.forEach((format) => {
 		let srcset = '';
-		sizes.forEach((size, index) => {
-			srcset += `${image.src}@w=${size.width}+${
-				aspectRatio ? `h=${size.width / aspectRatio}+` : ''
-			}${query ? `${query}+` : ''}fm=${format}+q=${quality}.${format} ${size.width}w`;
-			if (index < sizes.length - 1) srcset += ', ';
+		options.sizes.forEach((size, index) => {
+			srcset += `${src}@w=${size.width}+${
+				options.aspectRatio ? `h=${size.width / options.aspectRatio}+` : ''
+			}${options.query ? `${options.query}+` : ''}fm=${format}+q=${options.quality}.${format} ${
+				size.width
+			}w`;
+			if (index < options.sizes.length - 1) srcset += ', ';
 		});
 
 		let type = '';
@@ -56,22 +56,22 @@
 	});
 </script>
 
-{#if image.width}
+{#if src}
 	<picture>
 		{#each images as image}
 			<source srcset={image.srcset} sizes={image.sizes} type={image.type} />
 		{/each}
 		<img
 			class="image-component {className}"
-			{loading}
-			src="{image.src}@w={sizes[sizes.length - 1].width}+{aspectRatio
-				? `h=${sizes[sizes.length - 1].width / aspectRatio}+`
-				: ''}{query ? `${query}+` : ''}fm={formats[formats.length - 1]}+q={quality}.{formats[
-				formats.length - 1
-			]}"
+			loading={options.loading}
+			src="{src}@w={options.sizes[options.sizes.length - 1].width}+{options.aspectRatio
+				? `h=${options.sizes[options.sizes.length - 1].width / options.aspectRatio}+`
+				: ''}{options.query ? `${options.query}+` : ''}fm={options.formats[
+				options.formats.length - 1
+			]}+q={options.quality}.{options.formats[options.formats.length - 1]}"
 			{alt}
-			width={image.width}
-			height={aspectRatio ? image.width / aspectRatio : image.height}
+			{width}
+			height={options.aspectRatio ? width && width / options.aspectRatio : height}
 			on:load
 		/>
 	</picture>
@@ -80,7 +80,7 @@
 <style global>
 	.image-component {
 		display: block;
-		width: 100%;
-		height: auto;
+		/* width: 100%;
+		height: auto; */
 	}
 </style>
