@@ -1,33 +1,42 @@
 <script lang="ts">
+	import type { ImageOptions } from '$lib/types';
+
 	interface ImageSet {
 		srcset: string;
 		type: string;
 		sizes: string;
 	}
 
-	interface ImageOptions {
-		sizes: { width: number; maxWidth?: number }[]; // from small to large sizes. width: the width of the image; maxWidth: until which width should that image size be used. the last size doesn't need a maxWidth
+	interface ImageOptionsDefault {
+		sizes?: { width: number; maxWidth?: number }[];
 		loading: 'eager' | 'lazy';
 		quality: number;
-		formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[]; // fallback should come last
+		formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
 		aspectRatio?: number;
 		query?: string;
 	}
 
-	type PartialOption<T, K extends keyof T> = Partial<Pick<T, K>> & Pick<T, Exclude<keyof T, K>>;
+	interface ImageOptionsCombined {
+		sizes: { width: number; maxWidth?: number }[];
+		loading: 'eager' | 'lazy';
+		quality: number;
+		formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
+		aspectRatio?: number;
+		query?: string;
+	}
 
 	export let src: string | undefined;
 	export let width: number | undefined;
 	export let height: number | undefined;
 	export let alt: string | undefined;
-	export let options: PartialOption<ImageOptions, 'loading' | 'quality' | 'formats'>;
-	const optionsDefault: PartialOption<ImageOptions, 'sizes'> = {
+	export let options: ImageOptions;
+	const optionsDefault: ImageOptionsDefault = {
 		loading: 'eager',
 		quality: 80,
 		formats: ['webp', 'jpg']
 	};
 
-	const _options: ImageOptions = Object.assign({}, optionsDefault, options);
+	const _options: ImageOptionsCombined = Object.assign({}, optionsDefault, options);
 
 	let className = '';
 	export { className as class };

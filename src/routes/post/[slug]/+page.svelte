@@ -2,11 +2,12 @@
 	import Image from '$lib/components/image.svelte';
 	import Markdown from '$lib/components/markdown.svelte';
 
+	import type { ImageOptions } from '$lib/types';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const imageOptions = {
+	const imageOptions: ImageOptions = {
 		sizes: [{ width: 400, maxWidth: 400 }, { width: 640 }]
 	};
 </script>
