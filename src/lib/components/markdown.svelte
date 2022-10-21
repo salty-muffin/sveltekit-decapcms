@@ -22,9 +22,9 @@
 			{:else if child.tagName === 'a'}
 				<a href={child.properties?.href}><svelte:self hast={child} {imageOptions} /></a>
 			{:else}
-				<svelte:element this={child.tagName}>
-					<svelte:self hast={child} {imageOptions} />
-				</svelte:element>
+				<svelte:element this={child.tagName}
+					><svelte:self hast={child} {imageOptions} /></svelte:element
+				>
 			{/if}
 		{:else if child.type === 'text'}
 			{child.value}
