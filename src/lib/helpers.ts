@@ -1,32 +1,35 @@
 import sharp from 'sharp';
 
+import type { HastNode } from 'mdast-util-to-hast/lib';
 import type { Hast, Image } from '$lib/types';
 
-export const reduceHast = (hast: Hast): Hast => {
-	// remove all unnessesary elements from hast (like position, properties or newlines) so no unnecessary information gets built
+export const reduceHast = (hast: HastNode): Hast => {
+	// remove all unnessesary elements from hast (like position, properties or newlines)
 	return {
 		type: hast.type,
-		...(hast.children && {
+		...('children' in hast && {
 			children: hast.children
-				.filter((child: Hast) => !child.value || child.value !== '\n')
-				.map((child: Hast) => reduceHast(child))
+				.filter(
+					(child: HastNode) => !('value' in child) || ('value' in child && child.value !== '\n')
+				)
+				.map((child: HastNode) => reduceHast(child))
 		}),
-		...(hast.value && { value: hast.value }),
-		...(hast.tagName && { tagName: hast.tagName }),
-		...(hast.properties && { properties: hast.properties })
+		...('value' in hast && { value: hast.value }),
+		...('tagName' in hast && { tagName: hast.tagName }),
+		...('properties' in hast && { properties: hast.properties })
 	};
 };
 
 export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
-	if (hast.tagName === 'img' && hast.properties) {
+	if ('tagName' in hast && hast.tagName === 'img') {
 		let width = undefined;
 		let height = undefined;
 		try {
-			const metadata = await sharp(`src/${hast.properties.src}`).metadata();
+			const metadata = await sharp(`src/${hast.properties?.src}`).metadata();
 			width = metadata.width;
 			height = metadata.height;
 		} catch {
-			console.log(`[warning] could not open src/${hast.properties.src}`);
+			console.log(`[warning] could not open src/${hast.properties?.src}`);
 		}
 
 		hast.properties = {
@@ -37,7 +40,7 @@ export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
 	}
 	if (hast.children) {
 		hast.children = await Promise.all(
-			hast.children.map(async (child) => await addImagePropertiesToHast(child))
+			hast.children?.map(async (child) => await addImagePropertiesToHast(child))
 		);
 	}
 	return hast;

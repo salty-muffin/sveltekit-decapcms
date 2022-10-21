@@ -8,7 +8,7 @@ optional: ''
 
 # This is a heading
 
-this is _some_ **text** that may be both **bold _and italic_**.
+this is _some_ **text** that may be both **bold _and italic_**
 
 ## And another heading
 

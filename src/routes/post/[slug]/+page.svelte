@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Image from '$lib/components/image.svelte';
 	import Markdown from '$lib/components/markdown.svelte';
 
 	import type { ImageOptions } from '$lib/types';
@@ -7,7 +6,7 @@
 
 	export let data: PageData;
 
-	const imageOptions: ImageOptions = {
+	const options: ImageOptions = {
 		sizes: [{ width: 400, maxWidth: 400 }, { width: 640 }]
 	};
 </script>
@@ -18,12 +17,6 @@
 	<h3>{data.optional}</h3>
 {/if}
 
-<Image
-	src={data.image.src}
-	alt="demo"
-	width={data.image.width}
-	height={data.image.height}
-	options={imageOptions}
-/>
+<img src={data.image.src} alt="demo" width={data.image.width} height={data.image.height} />
 
-<Markdown hast={data.body} {imageOptions} />
+<Markdown hast={data.body} imageOptions={options} />
