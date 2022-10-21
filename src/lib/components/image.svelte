@@ -7,36 +7,28 @@
 		sizes: string;
 	}
 
-	interface ImageOptionsDefault {
-		sizes?: { width: number; maxWidth?: number }[];
-		loading: 'eager' | 'lazy';
-		quality: number;
-		formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
-		aspectRatio?: number;
-		query?: string;
-	}
-
-	interface ImageOptionsCombined {
-		sizes: { width: number; maxWidth?: number }[];
-		loading: 'eager' | 'lazy';
-		quality: number;
-		formats: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[];
-		aspectRatio?: number;
-		query?: string;
-	}
+	type RequiredOption<T, K extends keyof T> = Required<Pick<T, K>> & Pick<T, Exclude<keyof T, K>>;
+	type PartialOption<T, K extends keyof T> = Partial<Pick<T, K>> & Pick<T, Exclude<keyof T, K>>;
 
 	export let src: string | undefined;
 	export let width: number | undefined;
 	export let height: number | undefined;
 	export let alt: string | undefined;
 	export let options: ImageOptions;
-	const optionsDefault: ImageOptionsDefault = {
+	const optionsDefault: RequiredOption<
+		PartialOption<ImageOptions, 'sizes'>,
+		'loading' | 'quality' | 'formats'
+	> = {
 		loading: 'eager',
 		quality: 80,
 		formats: ['webp', 'jpg']
 	};
 
-	const _options: ImageOptionsCombined = Object.assign({}, optionsDefault, options);
+	const _options: RequiredOption<ImageOptions, 'loading' | 'quality' | 'formats'> = Object.assign(
+		{},
+		optionsDefault,
+		options
+	);
 
 	let className = '';
 	export { className as class };
