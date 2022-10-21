@@ -4,7 +4,7 @@
 	interface ImageSet {
 		srcset: string;
 		type: string;
-		sizes: string;
+		sizesOption: string;
 	}
 
 	export let src: string | undefined;
@@ -21,7 +21,14 @@
 		formats: ['webp', 'jpg']
 	};
 
-	const _options: RequiredOption<ImageOptions, 'loading' | 'quality' | 'formats'> = Object.assign(
+	const {
+		sizes: sizesOption,
+		loading,
+		quality,
+		formats,
+		aspectRatio,
+		query
+	}: RequiredOption<ImageOptions, 'loading' | 'quality' | 'formats'> = Object.assign(
 		{},
 		optionsDefault,
 		options
@@ -31,22 +38,20 @@
 	export { className as class };
 
 	let images: ImageSet[] = [];
-	// create a srcset, type & sizes for each format
-	let sizes_ = '';
-	_options.sizes.forEach((size, index) => {
-		if (index < _options.sizes.length - 1)
-			sizes_ += `(max-width: ${size.maxWidth}px) ${size.width}px, `;
-		else sizes_ += `${size.width}px`;
+	// create a srcset, type & sizesOption for each format
+	let sizes = '';
+	sizesOption.forEach((size, index) => {
+		if (index < sizesOption.length - 1)
+			sizes += `(max-width: ${size.maxWidth}px) ${size.width}px, `;
+		else sizes += `${size.width}px`;
 	});
-	_options.formats.forEach((format) => {
+	formats.forEach((format) => {
 		let srcset = '';
-		_options.sizes.forEach((size, index) => {
-			srcset += `${src}@w=${size.width}+${
-				_options.aspectRatio ? `h=${size.width / _options.aspectRatio}+` : ''
-			}${_options.query ? `${_options.query}+` : ''}fm=${format}+q=${_options.quality}.${format} ${
-				size.width
-			}w`;
-			if (index < _options.sizes.length - 1) srcset += ', ';
+		sizesOption.forEach((size, index) => {
+			srcset += `${src}@w=${size.width}+${aspectRatio ? `h=${size.width / aspectRatio}+` : ''}${
+				query ? `${query}+` : ''
+			}fm=${format}+q=${quality}.${format} ${size.width}w`;
+			if (index < sizesOption.length - 1) srcset += ', ';
 		});
 
 		let type = '';
@@ -67,26 +72,26 @@
 				type = 'image/avif';
 				break;
 		}
-		images.push({ srcset: srcset, type: type, sizes: sizes_ });
+		images.push({ srcset: srcset, type: type, sizesOption: sizes });
 	});
 </script>
 
 {#if src}
 	<picture>
 		{#each images as image}
-			<source srcset={image.srcset} sizes={image.sizes} type={image.type} />
+			<source srcset={image.srcset} sizes={image.sizesOption} type={image.type} />
 		{/each}
 		<img
 			class="image-component {className}"
-			loading={_options.loading}
-			src="{src}@w={_options.sizes[_options.sizes.length - 1].width}+{_options.aspectRatio
-				? `h=${_options.sizes[_options.sizes.length - 1].width / _options.aspectRatio}+`
-				: ''}{_options.query ? `${_options.query}+` : ''}fm={_options.formats[
-				_options.formats.length - 1
-			]}+q={_options.quality}.{_options.formats[_options.formats.length - 1]}"
+			{loading}
+			src="{src}@w={sizesOption[sizesOption.length - 1].width}+{aspectRatio
+				? `h=${sizesOption[sizesOption.length - 1].width / aspectRatio}+`
+				: ''}{query ? `${query}+` : ''}fm={formats[formats.length - 1]}+q={quality}.{formats[
+				formats.length - 1
+			]}"
 			{alt}
 			{width}
-			height={_options.aspectRatio ? width && width / _options.aspectRatio : height}
+			height={aspectRatio ? width && width / aspectRatio : height}
 			on:load
 		/>
 	</picture>
