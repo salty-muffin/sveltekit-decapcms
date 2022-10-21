@@ -18,12 +18,12 @@
 {/if}
 
 <img src={data.image.src} alt="demo" width={data.image.width} height={data.image.height} />
-<Image
+<!-- <Image
 	src={data.image.src}
 	alt="demo"
 	width={data.image.width}
 	height={data.image.height}
 	options={imageOptions}
-/>
+/> -->
 
 <Markdown hast={data.body} {imageOptions} />
