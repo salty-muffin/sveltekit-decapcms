@@ -12,6 +12,10 @@ export const GET: RequestHandler = async ({ params }) => {
 			`[info] processing image src/images/${params.slug}.${params.type}@${params.query}.${params.ending}`
 		);
 
+		if (!image) {
+			throw error(500, 'image could not be opened properly');
+		}
+
 		// process query with the format '@p1=v1+p2=v2'
 		const queries = params.query.split('+');
 		let width: number | null = null;
@@ -80,10 +84,7 @@ export const GET: RequestHandler = async ({ params }) => {
 			}
 		}
 
-		if (image) {
-			return new Response(await transformedImage.toBuffer(), { headers: { 'Content-Type': type } });
-		}
-		throw error(500, 'image could not be opened properly');
+		return new Response(await transformedImage.toBuffer(), { headers: { 'Content-Type': type } });
 	} catch {
 		throw error(404, 'not found');
 	}
