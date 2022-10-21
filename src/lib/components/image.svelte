@@ -1,14 +1,11 @@
 <script lang="ts">
-	import type { ImageOptions } from '$lib/types';
+	import type { ImageOptions, RequiredOption, PartialOption } from '$lib/types';
 
 	interface ImageSet {
 		srcset: string;
 		type: string;
 		sizes: string;
 	}
-
-	type RequiredOption<T, K extends keyof T> = Required<Pick<T, K>> & Pick<T, Exclude<keyof T, K>>;
-	type PartialOption<T, K extends keyof T> = Partial<Pick<T, K>> & Pick<T, Exclude<keyof T, K>>;
 
 	export let src: string | undefined;
 	export let width: number | undefined;
