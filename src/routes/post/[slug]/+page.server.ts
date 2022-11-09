@@ -28,7 +28,7 @@ export const load: PageServerLoad = async ({ params }) => {
 				description: post.attributes.description,
 				image: await getImageProperties(post.attributes.image),
 				optional: post.attributes.optional,
-				body: hast ? await addImagePropertiesToHast(reduceHast(hast)) : undefined
+				body: hast && (await addImagePropertiesToHast(reduceHast(hast)))
 			};
 		}
 		throw error(500, 'something wrong with the markdown file');
