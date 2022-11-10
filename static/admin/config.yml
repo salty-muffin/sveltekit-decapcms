@@ -2,7 +2,7 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: src/images # Folder where user uploaded files should go
+media_folder: src/images # folder where user uploaded files should go
 public_folder: /images
 
 search: false
@@ -13,14 +13,13 @@ slug:
   sanitize_replacement: '-'
 
 collections:
-  # PARTICIPANT
-  - name: posts # Used in routes, e.g., /admin/collections/blog
+  - name: posts # used in routes, e.g. /admin/collections/blog
     identifier_field: name
-    label: Posts # Used in the UI
-    folder: src/content/posts # The path to the folder where the documents are stored
-    create: true # Allow users to create new documents in this collection
-    slug: '{{slug}}' # Filename template, e.g., YYYY-MM-DD-title.md
-    fields: # The fields for each document, usually in front matter
+    label: Posts # used in the ui
+    folder: src/content/posts # path to the folder where the documents are stored
+    create: true # allow users to create new documents in this collection
+    slug: '{{slug}}' # filename template, e.g., YYYY-MM-DD-title.md
+    fields: # fields for each document in front matter
       - { label: Title, name: title, widget: string }
       - { label: Description, name: description, widget: text }
       - { label: Image, name: image, widget: image }
