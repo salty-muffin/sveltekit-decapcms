@@ -14,7 +14,7 @@ slug:
 
 collections:
   - name: posts # used in routes, e.g. /admin/collections/blog
-    identifier_field: name
+    identifier_field: title
     label: Posts # used in the ui
     folder: src/content/posts # path to the folder where the documents are stored
     create: true # allow users to create new documents in this collection
