@@ -3,7 +3,7 @@
 
 	import type { Hast, ImageOptions } from '$lib/types';
 
-	export let hast: Hast | undefined;
+	export let hast: Hast | null | undefined;
 	export let imageOptions: ImageOptions;
 </script>
 
