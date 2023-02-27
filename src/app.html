@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
+		<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 		%sveltekit.head%
 	</head>
-	<body>
-		<div>%sveltekit.body%</div>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+		<script>
+			if (window.netlifyIdentity) {
+			  window.netlifyIdentity.on("init", user => {
+				if (!user) {
+				  window.netlifyIdentity.on("login", () => {
+					document.location.href = "/admin/";
+				  });
+				}
+			  });
+			}
+		  </script>
 	</body>
 </html>
