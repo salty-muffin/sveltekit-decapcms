@@ -52,7 +52,7 @@ export const GET: RequestHandler = async ({ params }) => {
 		}
 
 		// transform the image
-		let transformedImage = image;
+		let transformedImage = image.rotate();
 		if (width || height)
 			transformedImage = transformedImage.resize(width, height, { position: position });
 		let type = `image/${(await image.metadata()).format}`;
