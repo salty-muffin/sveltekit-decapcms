@@ -48,7 +48,7 @@
 	formats.forEach((format) => {
 		let srcset = '';
 		sizesOption.forEach((size, index) => {
-			srcset += `${src}@w=${size.width}+${aspectRatio ? `h=${size.width / aspectRatio}+` : ''}${
+			srcset += `${src}@w=${size.width}+${aspectRatio ? `h=${Math.round(size.width / aspectRatio)}+` : ''}${
 				query ? `${query}+` : ''
 			}fm=${format}+q=${quality}.${format} ${size.width}w`;
 			if (index < sizesOption.length - 1) srcset += ', ';
@@ -85,13 +85,13 @@
 			class="image-component {className}"
 			{loading}
 			src="{src}@w={sizesOption[sizesOption.length - 1].width}+{aspectRatio
-				? `h=${sizesOption[sizesOption.length - 1].width / aspectRatio}+`
+				? `h=${Math.round(sizesOption[sizesOption.length - 1].width / aspectRatio)}+`
 				: ''}{query ? `${query}+` : ''}fm={formats[formats.length - 1]}+q={quality}.{formats[
 				formats.length - 1
 			]}"
 			{alt}
 			{width}
-			height={aspectRatio ? width && width / aspectRatio : height}
+			height={aspectRatio ? width && Math.round(width / aspectRatio) : height}
 			on:load
 		/>
 	</picture>
