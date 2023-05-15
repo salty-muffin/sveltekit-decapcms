@@ -14,7 +14,7 @@ export interface Hast {
 	};
 }
 
-export interface Image {
+export interface Asset {
 	src: string;
 	width?: number;
 	height?: number;
