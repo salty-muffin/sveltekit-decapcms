@@ -19,8 +19,8 @@ export const reduceHast = (hast: Hast): Hast => {
 
 export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
 	if (hast.tagName === 'img' && hast.properties) {
-		let width = undefined;
-		let height = undefined;
+		let width;
+		let height;
 		try {
 			const metadata = await sharp(`src/${hast.properties.src}`).metadata();
 			width = metadata.width;
@@ -44,8 +44,8 @@ export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
 };
 
 export const getImageProperties = async (path: string): Promise<Image> => {
-	let width = undefined;
-	let height = undefined;
+	let width;
+	let height;
 	try {
 		const metadata = await sharp(`src/${path}`).metadata();
 		width = metadata.width;
