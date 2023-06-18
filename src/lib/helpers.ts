@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 
-import type { Hast, Image } from '$lib/types';
+import type { Hast, Asset } from '$lib/types';
 
 export const reduceHast = (hast: Hast): Hast => {
 	// remove all unnessesary elements from hast (like position, properties or newlines) so no unnecessary information gets built
