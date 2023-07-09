@@ -4,7 +4,7 @@ import fs from 'fs';
 import fm from 'front-matter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { toHast } from 'mdast-util-to-hast';
-import { getImageProperties, addImagePropertiesToHast, reduceHast } from '$lib/helpers';
+import { getImageProperties, addImagePropertiesToHast, reduceHast } from '$lib/markdown';
 
 interface Demo {
 	title: string;
