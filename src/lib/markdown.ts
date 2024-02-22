@@ -19,12 +19,13 @@ export const reduceHast = (hast: Hast): Hast => {
 
 export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
 	if (hast.tagName === 'img' && hast.properties) {
-		let width = undefined;
-		let height = undefined;
+		let width;
+		let height;
 		try {
 			const metadata = await sharp(`src/${hast.properties.src}`).metadata();
-			width = metadata.width;
-			height = metadata.height;
+			width = !metadata.orientation || metadata.orientation <= 4 ? metadata.width : metadata.height;
+			height =
+				!metadata.orientation || metadata.orientation <= 4 ? metadata.height : metadata.width;
 		} catch {
 			console.log(`[warning] could not open src/${hast.properties.src}`);
 		}
@@ -48,8 +49,8 @@ export const getImageProperties = async (path: string): Promise<Image> => {
 	let height = undefined;
 	try {
 		const metadata = await sharp(`src/${path}`).metadata();
-		width = metadata.width;
-		height = metadata.height;
+		width = !metadata.orientation || metadata.orientation <= 4 ? metadata.width : metadata.height;
+		height = !metadata.orientation || metadata.orientation <= 4 ? metadata.height : metadata.width;
 	} catch {
 		console.log(`[warning] could not open src/${path}`);
 	}
