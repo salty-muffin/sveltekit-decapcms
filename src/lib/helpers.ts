@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 
-import type { Hast, Asset } from '$lib/types';
+import type { Hast, Image } from '$lib/types';
 
 export const reduceHast = (hast: Hast): Hast => {
 	// remove all unnessesary elements from hast (like position, properties or newlines) so no unnecessary information gets built
@@ -43,7 +43,7 @@ export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
 	return hast;
 };
 
-export const getImageProperties = async (path: string): Promise<Asset> => {
+export const getImageProperties = async (path: string): Promise<Image> => {
 	let width = undefined;
 	let height = undefined;
 	try {

@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({ params }) => {
 		);
 
 		if (!image) {
-			throw error(500, 'image could not be opened properly');
+			error(500, 'image could not be opened properly');
 		}
 
 		// process query with the format '@p1=v1+p2=v2'
@@ -47,7 +47,7 @@ export const GET: RequestHandler = async ({ params }) => {
 					quality = Number(query.split('=')[1]);
 					break;
 				default:
-					throw error(500, 'unrecognized image query');
+					error(500, 'unrecognized image query');
 			}
 		}
 
@@ -80,12 +80,12 @@ export const GET: RequestHandler = async ({ params }) => {
 					transformedImage = transformedImage.avif({ quality: quality });
 					break;
 				default:
-					throw error(500, 'unrecognized image format');
+					error(500, 'unrecognized image format');
 			}
 		}
 
 		return new Response(await transformedImage.toBuffer(), { headers: { 'Content-Type': type } });
 	} catch {
-		throw error(404, 'not found');
+		error(404, 'not found');
 	}
 };

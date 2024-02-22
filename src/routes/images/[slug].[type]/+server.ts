@@ -15,8 +15,8 @@ export const GET: RequestHandler = async ({ params }) => {
 				headers: { 'Content-Type': `image/${(await image.metadata()).format}` }
 			});
 		}
-		throw error(500, 'image could not be opened properly');
+		error(500, 'image could not be opened properly');
 	} catch {
-		throw error(404, 'not found');
+		error(404, 'not found');
 	}
 };

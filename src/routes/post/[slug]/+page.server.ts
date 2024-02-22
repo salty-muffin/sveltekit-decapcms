@@ -31,8 +31,8 @@ export const load: PageServerLoad = async ({ params }) => {
 				body: hast && (await addImagePropertiesToHast(reduceHast(hast)))
 			};
 		}
-		throw error(500, 'something wrong with the markdown file');
+		error(500, 'something wrong with the markdown file');
 	} catch {
-		throw error(404, 'not found');
+		error(404, 'not found');
 	}
 };

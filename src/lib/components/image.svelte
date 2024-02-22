@@ -7,11 +7,15 @@
 		sizesOption: string;
 	}
 
-	export let src: string | undefined;
-	export let width: number | undefined;
-	export let height: number | undefined;
-	export let alt: string | undefined;
+	export let src: string;
+	export let width: number = 0;
+	export let height: number = 0;
+	export let alt: string = '';
 	export let options: ImageOptions;
+	let className = '';
+	export { className as class };
+	export let style = '';
+
 	const optionsDefault: RequiredOption<
 		PartialOption<ImageOptions, 'sizes'>,
 		'loading' | 'quality' | 'formats'
@@ -34,9 +38,6 @@
 		options
 	);
 
-	let className = '';
-	export { className as class };
-
 	let images: ImageSet[] = [];
 	// create a srcset, type & sizesOption for each format
 	let sizes = '';
@@ -48,9 +49,9 @@
 	formats.forEach((format) => {
 		let srcset = '';
 		sizesOption.forEach((size, index) => {
-			srcset += `${src}@w=${size.width}+${aspectRatio ? `h=${Math.round(size.width / aspectRatio)}+` : ''}${
-				query ? `${query}+` : ''
-			}fm=${format}+q=${quality}.${format} ${size.width}w`;
+			srcset += `${src}@w=${size.width}+${
+				aspectRatio ? `h=${Math.round(size.width / aspectRatio)}+` : ''
+			}${query ? `${query}+` : ''}fm=${format}+q=${quality}.${format} ${size.width}w`;
 			if (index < sizesOption.length - 1) srcset += ', ';
 		});
 
@@ -83,6 +84,7 @@
 		{/each}
 		<img
 			class="image-component {className}"
+			{style}
 			{loading}
 			src="{src}@w={sizesOption[sizesOption.length - 1].width}+{aspectRatio
 				? `h=${Math.round(sizesOption[sizesOption.length - 1].width / aspectRatio)}+`
@@ -100,7 +102,7 @@
 <style global>
 	.image-component {
 		display: block;
-		/* width: 100%;
-		height: auto; */
+		width: 100%;
+		height: auto;
 	}
 </style>
