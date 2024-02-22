@@ -10,7 +10,7 @@
 {#if hast && hast.children}
 	{#each hast.children as child}
 		{#if child.type === 'element'}
-			{#if child.tagName === 'img' && child.properties}
+			{#if child.tagName === 'img' && child.properties && child.properties.src}
 				<Image
 					src={child.properties.src}
 					alt={child.properties.alt}
