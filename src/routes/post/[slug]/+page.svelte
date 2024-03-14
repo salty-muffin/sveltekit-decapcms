@@ -17,13 +17,14 @@
 	<h3>{data.optional}</h3>
 {/if}
 
-<img src={data.image.src} alt="demo" width={data.image.width} height={data.image.height} />
-<!-- <Image
-	src={data.image.src}
-	alt="demo"
-	width={data.image.width}
-	height={data.image.height}
-	options={imageOptions}
-/> -->
+{#if data.image}
+	<Image
+		src={data.image.src}
+		alt="demo"
+		width={data.image.width}
+		height={data.image.height}
+		options={imageOptions}
+	/>
+{/if}
 
 <Markdown hast={data.body} {imageOptions} />
