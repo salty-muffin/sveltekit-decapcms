@@ -1,22 +1,5 @@
 ---
-title: This is a Title
-description: This is a description
-# image: /images/demo-image.jpg # this setting has to be optional
-draft: false
-optional: ''
+title: This is the Title
+# the following setting has to be optional
+# image: /images/demo-image.jpg
 ---
-
-# This is a heading
-
-this is _some_ **text** that may be both **bold _and italic_**.
-
-## And another heading
-
-- this is a list
-- with some
-- items
-  - and some
-  - subitems
-
-1. this is a numbered list
-2. it has numbers

@@ -1,10 +1,22 @@
 <script lang="ts">
-	import type { ImageOptions, RequiredOption, PartialOption } from '$lib/types';
-
 	interface ImageSet {
 		srcset: string;
 		type: string;
 		sizesOption: string;
+	}
+
+	type RequiredOption<T, K extends keyof T> = Required<Pick<T, K>> &
+		Pick<T, Exclude<keyof T, K>>;
+	type PartialOption<T, K extends keyof T> = Partial<Pick<T, K>> &
+		Pick<T, Exclude<keyof T, K>>;
+
+	interface ImageOptions {
+		sizes: { width: number; maxWidth?: number }[]; // from small to large sizes. width: the width of the image; maxWidth: until which width should that image size be used. the last size doesn't need a maxWidth
+		loading?: 'eager' | 'lazy';
+		quality?: number;
+		formats?: ('jpg' | 'png' | 'webp' | 'gif' | 'avif')[]; // fallback should come last
+		aspectRatio?: number;
+		query?: string;
 	}
 
 	export let src: string;
@@ -98,11 +110,3 @@
 		/>
 	</picture>
 {/if}
-
-<style global>
-	.image-component {
-		display: block;
-		width: 100%;
-		height: auto;
-	}
-</style>

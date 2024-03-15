@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Image from '$lib/components/image.svelte';
-	import Markdown from '$lib/components/markdown.svelte';
 
 	import type { PageData } from './$types';
 
@@ -12,11 +11,9 @@
 </script>
 
 <h1>{data.title}</h1>
-<h2>{data.description}</h2>
-{#if data.optional}
-	<h3>{data.optional}</h3>
-{/if}
 
+<!-- this only gets rendered, if 'image' in the frontmatter of
+	the corresponding markdown file on src/content/posts is set -->
 {#if data.image}
 	<Image
 		src={data.image.src}
@@ -26,5 +23,3 @@
 		options={imageOptions}
 	/>
 {/if}
-
-<Markdown hast={data.body} {imageOptions} />
