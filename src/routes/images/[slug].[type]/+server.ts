@@ -2,13 +2,13 @@ import type { RequestHandler } from './$types';
 import { error } from '@sveltejs/kit';
 import sharp from 'sharp';
 
-export const prerender = true;
+export const prerender = 'auto';
 
 export const GET: RequestHandler = async ({ params }) => {
 	try {
 		const image = sharp(`src/images/${params.slug}.${params.type}`);
 
-		console.log(`[info] processing image src/images/${params.slug}.${params.type}`);
+		console.log(`processing image src/images/${params.slug}.${params.type}`);
 
 		if (image) {
 			return new Response(await image.toBuffer(), {
@@ -16,7 +16,8 @@ export const GET: RequestHandler = async ({ params }) => {
 			});
 		}
 		error(500, 'image could not be opened properly');
-	} catch {
+	} catch (err) {
+		console.error(err)
 		error(404, 'not found');
 	}
 };

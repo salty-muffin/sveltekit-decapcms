@@ -27,7 +27,7 @@ export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
 			height =
 				!metadata.orientation || metadata.orientation <= 4 ? metadata.height : metadata.width;
 		} catch {
-			console.log(`[warning] could not open src/${hast.properties.src}`);
+			console.warn(`could not open src/${hast.properties.src}`);
 		}
 
 		hast.properties = {
@@ -52,7 +52,7 @@ export const getImageProperties = async (path: string): Promise<Image> => {
 		width = !metadata.orientation || metadata.orientation <= 4 ? metadata.width : metadata.height;
 		height = !metadata.orientation || metadata.orientation <= 4 ? metadata.height : metadata.width;
 	} catch {
-		console.log(`[warning] could not open src/${path}`);
+		console.warn(`could not open src/${path}`);
 	}
 
 	return { src: path, width: width, height: height };
