@@ -6,10 +6,12 @@ export const prerender = true;
 
 export const GET: RequestHandler = async ({ params }) => {
 	try {
-		const image = sharp(`src/images/${params.slug}.${params.type}`);
+		const path = decodeURI(params.path);
+
+		const image = sharp(`src/images/${path}.${params.type}`);
 
 		console.log(
-			`[info] processing image src/images/${params.slug}.${params.type}@${params.query}.${params.ending}`
+			`[info] processing image src/images/${path}.${params.type}@${params.query}.${params.ending}`
 		);
 
 		if (!image) {

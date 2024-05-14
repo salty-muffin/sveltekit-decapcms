@@ -17,33 +17,6 @@ export const reduceHast = (hast: Hast): Hast => {
 	};
 };
 
-export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
-	if (hast.tagName === 'img' && hast.properties) {
-		let width;
-		let height;
-		try {
-			const metadata = await sharp(`src/${hast.properties.src}`).metadata();
-			width = !metadata.orientation || metadata.orientation <= 4 ? metadata.width : metadata.height;
-			height =
-				!metadata.orientation || metadata.orientation <= 4 ? metadata.height : metadata.width;
-		} catch {
-			console.log(`[warning] could not open src/${hast.properties.src}`);
-		}
-
-		hast.properties = {
-			...(hast.properties ? hast.properties : {}),
-			width: width,
-			height: height
-		};
-	}
-	if (hast.children) {
-		hast.children = await Promise.all(
-			hast.children.map(async (child) => await addImagePropertiesToHast(child))
-		);
-	}
-	return hast;
-};
-
 export const getImageProperties = async (path: string): Promise<Image> => {
 	let width = undefined;
 	let height = undefined;
@@ -55,5 +28,20 @@ export const getImageProperties = async (path: string): Promise<Image> => {
 		console.log(`[warning] could not open src/${path}`);
 	}
 
-	return { src: path, width: width, height: height };
+	return { src: encodeURI(path), width: width, height: height };
+};
+
+export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
+	if (hast.tagName === 'img' && hast.properties && hast.properties.src) {
+		hast.properties = {
+			...(hast.properties ? hast.properties : {}),
+			...(await getImageProperties(hast.properties.src))
+		};
+	}
+	if (hast.children) {
+		hast.children = await Promise.all(
+			hast.children.map(async (child) => await addImagePropertiesToHast(child))
+		);
+	}
+	return hast;
 };
