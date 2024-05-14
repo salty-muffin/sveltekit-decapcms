@@ -2,7 +2,7 @@ import type { RequestHandler } from './$types';
 import { error } from '@sveltejs/kit';
 import sharp from 'sharp';
 
-export const prerender = true;
+export const prerender = 'auto';
 
 export const GET: RequestHandler = async ({ params }) => {
 	try {
@@ -87,7 +87,8 @@ export const GET: RequestHandler = async ({ params }) => {
 		}
 
 		return new Response(await transformedImage.toBuffer(), { headers: { 'Content-Type': type } });
-	} catch {
+	} catch (err) {
+		console.error(err);
 		error(404, 'not found');
 	}
 };
