@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({ params }) => {
 		const image = sharp(`src/images/${path}.${params.type}`);
 
 		console.log(
-			`[info] processing image src/images/${path}.${params.type}@${params.query}.${params.ending}`
+			`processing image src/images/${path}.${params.type}@${params.query}.${params.ending}`
 		);
 
 		if (!image) {

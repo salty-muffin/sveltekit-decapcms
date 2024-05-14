@@ -10,7 +10,7 @@ export const GET: RequestHandler = async ({ params }) => {
 
 		const image = sharp(`src/images/${path}.${params.type}`);
 
-		console.log(`[info] processing image src/images/${path}.${params.type}`);
+		console.log(`processing image src/images/${path}.${params.type}`);
 
 		if (image) {
 			return new Response(await image.toBuffer(), {
