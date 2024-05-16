@@ -6,7 +6,7 @@ export const prerender = 'auto';
 
 export const GET: RequestHandler = async ({ params }) => {
 	try {
-		const path = decodeURI(params.path);
+		const path = decodeURI(params.basename);
 
 		const image = sharp(`src/images/${path}.${params.type}`);
 
