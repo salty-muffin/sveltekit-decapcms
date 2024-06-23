@@ -7,32 +7,42 @@
 		sizesOption: string;
 	}
 
-	export let src: string;
-	export let width: number = 0;
-	export let height: number = 0;
-	export let alt: string = '';
-	export let options: ImageOptions;
-	let className = '';
-	export { className as class };
-	export let style = '';
+	interface ImageProps {
+		src: string;
+		width?: number;
+		height?: number;
+		alt?: string;
+		className?: string;
+		options: ImageOptions;
+		props?: {
+			[x: string]: unknown;
+		};
+	}
+	let {
+		src,
+		width = 0,
+		height = 0,
+		alt = '',
+		options,
+		className = '',
+		...props
+	}: ImageProps = $props();
 
 	const optionsDefault: RequiredOption<
 		PartialOption<ImageOptions, 'sizes'>,
-		'loading' | 'quality' | 'formats'
+		'quality' | 'formats'
 	> = {
-		loading: 'eager',
 		quality: 80,
 		formats: ['webp', 'jpg']
 	};
 
 	const {
 		sizes: sizesOption,
-		loading,
 		quality,
 		formats,
 		aspectRatio,
 		query
-	}: RequiredOption<ImageOptions, 'loading' | 'quality' | 'formats'> = Object.assign(
+	}: RequiredOption<ImageOptions, 'quality' | 'formats'> = Object.assign(
 		{},
 		optionsDefault,
 		options
@@ -84,8 +94,7 @@
 		{/each}
 		<img
 			class="image-component {className}"
-			{style}
-			{loading}
+			{...props}
 			src="{src}@w={sizesOption[sizesOption.length - 1].width}+{aspectRatio
 				? `h=${Math.round(sizesOption[sizesOption.length - 1].width / aspectRatio)}+`
 				: ''}{query ? `${query}+` : ''}fm={formats[formats.length - 1]}+q={quality}.{formats[
@@ -94,7 +103,6 @@
 			{alt}
 			{width}
 			height={aspectRatio ? width && Math.round(width / aspectRatio) : height}
-			on:load
 		/>
 	</picture>
 {/if}

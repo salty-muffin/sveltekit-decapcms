@@ -13,12 +13,14 @@ const config = {
 			prependData: `@use 'src/lib/styles/variables.scss' as *;`
 		}
 	}),
-
 	kit: {
 		adapter: adapter({fallback: '404.html', strict: false}),
 		prerender: {
 			entries: ['/']
 		}
+	},
+	compilerOptions: {
+		runes: true
 	}
 };
 
