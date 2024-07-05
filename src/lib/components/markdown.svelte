@@ -3,8 +3,11 @@
 
 	import type { Hast, ImageOptions } from '$lib/types';
 
-	export let hast: Hast | null | undefined;
-	export let imageOptions: ImageOptions;
+	interface MarkdownProps {
+		hast: Hast | null | undefined;
+		imageOptions: ImageOptions;
+	}
+	let { hast, imageOptions }: MarkdownProps = $props();
 </script>
 
 {#if hast && hast.children}

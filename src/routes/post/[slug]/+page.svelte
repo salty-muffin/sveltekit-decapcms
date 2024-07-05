@@ -4,7 +4,7 @@
 
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
 	const imageOptions = {
 		sizes: [{ width: 400, maxWidth: 400 }, { width: 640 }]
