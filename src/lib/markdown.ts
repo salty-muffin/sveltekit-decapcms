@@ -34,7 +34,7 @@ export const getImageProperties = async (path: string): Promise<Image> => {
 export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
 	if (hast.tagName === 'img' && hast.properties && hast.properties.src) {
 		hast.properties = {
-			...(hast.properties ? hast.properties : {}),
+			...(hast.properties ?? {}),
 			...(await getImageProperties(hast.properties.src))
 		};
 	}
