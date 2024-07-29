@@ -16,7 +16,14 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		prerender: {
-			entries: ['/']
+			handleHttpError: ({ path, message }) => {
+				if (path === '/.netlify/images') {
+					return;
+				}
+
+				// otherwise fail the build
+				throw new Error(message);
+			}
 		}
 	},
 	compilerOptions: {
