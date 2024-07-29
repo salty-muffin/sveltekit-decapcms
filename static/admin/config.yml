@@ -2,7 +2,7 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: src/images # folder where user uploaded files should go
+media_folder: /static/images # folder where user uploaded files should go
 public_folder: /images
 
 search: false
