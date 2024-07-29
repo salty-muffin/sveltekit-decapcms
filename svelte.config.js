@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-netlify';
 import { sveltePreprocess } from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -14,7 +14,7 @@ const config = {
 		}
 	}),
 	kit: {
-		adapter: adapter({fallback: '404.html', strict: false}),
+		adapter: adapter(),
 		prerender: {
 			entries: ['/']
 		}
