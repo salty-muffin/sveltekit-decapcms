@@ -21,11 +21,11 @@ export const getImageProperties = async (path: string): Promise<Image> => {
 	let width = undefined;
 	let height = undefined;
 	try {
-		const metadata = await sharp(`src/${path}`).metadata();
+		const metadata = await sharp(`static/${path}`).metadata();
 		width = !metadata.orientation || metadata.orientation <= 4 ? metadata.width : metadata.height;
 		height = !metadata.orientation || metadata.orientation <= 4 ? metadata.height : metadata.width;
 	} catch {
-		console.warn(`could not open src/${path}`);
+		console.warn(`could not open static/${path}`);
 	}
 
 	return { src: encodeURI(path), width: width, height: height };
