@@ -14,7 +14,7 @@ const config = {
 		}
 	}),
 	kit: {
-		adapter: adapter({fallback: '404.html', strict: false}),
+		adapter: adapter({ fallback: '404.html', strict: false }),
 		prerender: {
 			entries: ['/']
 		}
