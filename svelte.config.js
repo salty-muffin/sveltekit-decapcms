@@ -10,17 +10,14 @@ const config = {
 			// We can use a path relative to the root because
 			// svelte-preprocess automatically adds it to `includePaths`
 			// if none is defined.
-			prependData: `@use 'src/lib/styles/variables.scss' as *;`
+			prependData: `@use "sass:map"; @use "sass:color"; @use 'src/lib/styles/variables.scss' as *;`
 		}
 	}),
 	kit: {
-		adapter: adapter({fallback: '404.html', strict: false}),
+		adapter: adapter({ fallback: '404.html', strict: false }),
 		prerender: {
 			entries: ['/']
 		}
-	},
-	compilerOptions: {
-		runes: true
 	}
 };
 
