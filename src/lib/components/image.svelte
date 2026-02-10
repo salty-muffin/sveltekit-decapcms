@@ -42,48 +42,52 @@
 		formats,
 		aspectRatio,
 		query
-	}: RequiredOption<ImageOptions, 'quality' | 'formats'> = Object.assign(
-		{},
-		optionsDefault,
-		options
+	}: RequiredOption<ImageOptions, 'quality' | 'formats'> = $derived(
+		Object.assign({}, optionsDefault, options)
 	);
 
-	let images: ImageSet[] = [];
 	// create a srcset, type & sizesOption for each format
-	let sizes = '';
-	sizesOption.forEach((size, index) => {
-		if (index < sizesOption.length - 1)
-			sizes += `(max-width: ${size.maxWidth}px) ${size.width}px, `;
-		else sizes += `${size.width}px`;
-	});
-	formats.forEach((format) => {
-		let srcset = '';
+	let sizes = $derived.by(() => {
+		let s = '';
 		sizesOption.forEach((size, index) => {
-			srcset += `${src}@w=${size.width}+${
-				aspectRatio ? `h=${Math.round(size.width / aspectRatio)}+` : ''
-			}${query ? `${query}+` : ''}fm=${format}+q=${quality}.${format} ${size.width}w`;
-			if (index < sizesOption.length - 1) srcset += ', ';
+			if (index < sizesOption.length - 1) s += `(max-width: ${size.maxWidth}px) ${size.width}px, `;
+			else s += `${size.width}px`;
 		});
+		return s;
+	});
+	let images = $derived.by(() => {
+		const i: ImageSet[] = [];
 
-		let type = '';
-		switch (format) {
-			case 'jpg':
-				type = 'image/jpeg';
-				break;
-			case 'png':
-				type = 'image/png';
-				break;
-			case 'webp':
-				type = 'image/webp';
-				break;
-			case 'gif':
-				type = 'image/gif';
-				break;
-			case 'avif':
-				type = 'image/avif';
-				break;
-		}
-		images.push({ srcset: srcset, type: type, sizesOption: sizes });
+		formats.forEach((format) => {
+			let srcset = '';
+			sizesOption.forEach((size, index) => {
+				srcset += `${src}@w=${size.width}+${
+					aspectRatio ? `h=${Math.round(size.width / aspectRatio)}+` : ''
+				}${query ? `${query}+` : ''}fm=${format}+q=${quality}.${format} ${size.width}w`;
+				if (index < sizesOption.length - 1) srcset += ', ';
+			});
+
+			let type = '';
+			switch (format) {
+				case 'jpg':
+					type = 'image/jpeg';
+					break;
+				case 'png':
+					type = 'image/png';
+					break;
+				case 'webp':
+					type = 'image/webp';
+					break;
+				case 'gif':
+					type = 'image/gif';
+					break;
+				case 'avif':
+					type = 'image/avif';
+					break;
+			}
+			i.push({ srcset: srcset, type: type, sizesOption: sizes });
+		});
+		return i;
 	});
 </script>
 
