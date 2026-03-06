@@ -24,6 +24,8 @@
 				/>
 			{:else if child.tagName === 'a' && child.properties}
 				<a href={child.properties.href}><Markdown hast={child} {imageOptions} /></a>
+			{:else if child.tagName === 'br'}
+				<br />
 			{:else}
 				<svelte:element this={child.tagName}
 					><Markdown hast={child} {imageOptions} /></svelte:element
