@@ -12,7 +12,7 @@
 		width?: number;
 		height?: number;
 		alt?: string;
-		className?: string;
+		class?: string;
 		options: ImageOptions;
 		props?: {
 			[x: string]: unknown;
@@ -24,7 +24,7 @@
 		height = 0,
 		alt = '',
 		options,
-		className = '',
+		class: className = '',
 		...props
 	}: ImageProps = $props();
 
@@ -89,7 +89,7 @@
 
 {#if src}
 	<picture>
-		{#each images as image}
+		{#each images as image (image.type)}
 			<source srcset={image.srcset} sizes={image.sizesOption} type={image.type} />
 		{/each}
 		<img

@@ -8,15 +8,15 @@ export const GET: RequestHandler = async ({ params }) => {
 	try {
 		const path = decodeURI(params.basename);
 
+		if (path.includes('..')) {
+			error(400, 'invalid path');
+		}
+
 		const image = sharp(`src/images/${path}.${params.type}`);
 
 		console.log(
 			`processing image src/images/${path}.${params.type}@${params.query}.${params.ending}`
 		);
-
-		if (!image) {
-			error(500, 'image could not be opened properly');
-		}
 
 		// process query with the format '@p1=v1+p2=v2'
 		const queries = params.query.split('+');
@@ -86,7 +86,8 @@ export const GET: RequestHandler = async ({ params }) => {
 			}
 		}
 
-		return new Response(await transformedImage.toBuffer(), { headers: { 'Content-Type': type } });
+		const buffer = await transformedImage.toBuffer();
+		return new Response(new Uint8Array(buffer), { headers: { 'Content-Type': type } });
 	} catch (err) {
 		console.error(err);
 		error(404, 'not found');

@@ -5,5 +5,5 @@
 	const { children } = $props();
 </script>
 
-<!-- enter "<svelte:head>" with "import { page } from '$app/stores';" here -->
+<!-- enter "<svelte:head>" with "import { page } from '$app/state';" here -->
 {@render children()}

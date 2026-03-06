@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
-import fs from 'fs';
+import fs from 'fs/promises';
 import fm from 'front-matter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { toHast } from 'mdast-util-to-hast';
@@ -16,9 +16,9 @@ interface Demo {
 
 export const load: PageServerLoad = async ({ params }) => {
 	try {
-		const post = fm<Demo>(fs.readFileSync(`src/content/posts/${params.slug}.md`, 'utf-8'));
+		const post = fm<Demo>(await fs.readFile(`src/content/posts/${params.slug}.md`, 'utf-8'));
 
-		console.log(`processing markdown src/content/${params.slug}.md`);
+		console.log(`processing markdown src/content/posts/${params.slug}.md`);
 
 		if (post) {
 			const hast = toHast(fromMarkdown(post.body));
@@ -32,8 +32,8 @@ export const load: PageServerLoad = async ({ params }) => {
 			};
 		}
 		error(500, 'something wrong with the markdown file');
-	} catch (err){
-		console.error(err)
+	} catch (err) {
+		console.error(err);
 		error(404, 'not found');
 	}
 };
