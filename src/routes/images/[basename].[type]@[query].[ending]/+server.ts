@@ -40,13 +40,19 @@ export const GET: RequestHandler = async ({ params }) => {
 		for (const query of queries) {
 			switch (query.split('=')[0]) {
 				// width
-				case 'w':
-					width = Number(query.split('=')[1]);
+				case 'w': {
+					const w = Number(query.split('=')[1]);
+					if (isNaN(w) || w <= 0) error(400, 'invalid width');
+					width = w;
 					break;
+				}
 				// height
-				case 'h':
-					height = Number(query.split('=')[1]);
+				case 'h': {
+					const h = Number(query.split('=')[1]);
+					if (isNaN(h) || h <= 0) error(400, 'invalid height');
+					height = h;
 					break;
+				}
 				// position
 				case 'p':
 					if (query.split('=')[1] === 'entropy') position = sharp.strategy.entropy;
@@ -57,9 +63,12 @@ export const GET: RequestHandler = async ({ params }) => {
 					format = query.split('=')[1];
 					break;
 				// quality
-				case 'q':
-					quality = Number(query.split('=')[1]);
+				case 'q': {
+					const q = Number(query.split('=')[1]);
+					if (isNaN(q) || q <= 0 || q > 100) error(400, 'invalid quality');
+					quality = q;
 					break;
+				}
 				default:
 					error(500, 'unrecognized image query');
 			}
