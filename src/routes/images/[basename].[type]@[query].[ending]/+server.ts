@@ -2,14 +2,26 @@ import type { RequestHandler } from './$types';
 import { error } from '@sveltejs/kit';
 import sharp from 'sharp';
 
+const ALLOWED_TYPES = new Set(['jpg', 'jpeg', 'png', 'webp', 'gif', 'avif', 'tiff', 'svg']);
+
 export const prerender = 'auto';
 
 export const GET: RequestHandler = async ({ params }) => {
 	try {
 		const path = decodeURI(params.basename);
 
-		if (path.includes('..')) {
+		if (
+			path.includes('..') ||
+			path.includes('\0') ||
+			path.startsWith('/') ||
+			path.includes('%2e') ||
+			path.includes('%2E')
+		) {
 			error(400, 'invalid path');
+		}
+
+		if (!ALLOWED_TYPES.has(params.type.toLowerCase())) {
+			error(400, 'invalid image type');
 		}
 
 		const image = sharp(`src/images/${path}.${params.type}`);
