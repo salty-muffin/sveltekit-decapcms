@@ -1,20 +1,36 @@
 import sharp from 'sharp';
 
-import type { Hast, Image } from '$lib/types';
+import type { Nodes, ElementContent, RootContent } from 'hast';
+import type { Image } from '$lib/types';
 
-export const reduceHast = (hast: Hast): Hast => {
+export const reduceHast = (node: Nodes): Nodes => {
 	// remove all unnecessary elements from hast (like position, properties or newlines) so no unnecessary information gets built
-	return {
-		type: hast.type,
-		...(hast.children && {
-			children: hast.children
-				.filter((child: Hast) => !child.value || child.value !== '\n')
-				.map((child: Hast) => reduceHast(child))
-		}),
-		...(hast.value && { value: hast.value }),
-		...(hast.tagName && { tagName: hast.tagName }),
-		...(hast.properties && { properties: hast.properties })
-	};
+	switch (node.type) {
+		case 'element':
+			return {
+				type: 'element',
+				tagName: node.tagName,
+				properties: node.properties,
+				children: node.children
+					.filter((child) => !(child.type === 'text' && child.value === '\n'))
+					.map((child) => reduceHast(child) as ElementContent)
+			};
+		case 'root':
+			return {
+				type: 'root',
+				children: node.children
+					.filter((child) => !(child.type === 'text' && child.value === '\n'))
+					.map((child) => reduceHast(child) as RootContent)
+			};
+		case 'text':
+			return { type: 'text', value: node.value };
+		case 'comment':
+			return { type: 'comment', value: node.value };
+		case 'doctype':
+			return { type: 'doctype' };
+		default:
+			return node;
+	}
 };
 
 export const getImageProperties = async (path: string | undefined): Promise<Image | undefined> => {
@@ -33,17 +49,21 @@ export const getImageProperties = async (path: string | undefined): Promise<Imag
 	return { src: encodeURI(path), width, height };
 };
 
-export const addImagePropertiesToHast = async (hast: Hast): Promise<Hast> => {
-	if (hast.tagName === 'img' && hast.properties && hast.properties.src) {
-		hast.properties = {
-			...(hast.properties ?? {}),
-			...(await getImageProperties(hast.properties.src))
-		};
+export const addImagePropertiesToHast = async (node: Nodes): Promise<Nodes> => {
+	if (node.type === 'element') {
+		if (node.tagName === 'img' && node.properties?.src) {
+			node.properties = {
+				...(node.properties ?? {}),
+				...(await getImageProperties(String(node.properties.src)))
+			};
+		}
+		node.children = (await Promise.all(
+			node.children.map(async (child) => await addImagePropertiesToHast(child))
+		)) as ElementContent[];
+	} else if (node.type === 'root') {
+		node.children = (await Promise.all(
+			node.children.map(async (child) => await addImagePropertiesToHast(child))
+		)) as RootContent[];
 	}
-	if (hast.children) {
-		hast.children = await Promise.all(
-			hast.children.map(async (child) => await addImagePropertiesToHast(child))
-		);
-	}
-	return hast;
+	return node;
 };
