@@ -17,7 +17,9 @@ export const reduceHast = (hast: Hast): Hast => {
 	};
 };
 
-export const getImageProperties = async (path: string): Promise<Image> => {
+export const getImageProperties = async (path: string | undefined): Promise<Image | undefined> => {
+	if (!path) return undefined;
+
 	let width = undefined;
 	let height = undefined;
 	try {
