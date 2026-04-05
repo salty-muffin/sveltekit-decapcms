@@ -33,9 +33,7 @@ export const reduceHast = (node: Nodes): Nodes => {
 	}
 };
 
-export const getImageProperties = async (path: string | undefined): Promise<Image | undefined> => {
-	if (!path) return undefined;
-
+export const getImageProperties = async (path: string): Promise<Image> => {
 	let width = undefined;
 	let height = undefined;
 	try {
