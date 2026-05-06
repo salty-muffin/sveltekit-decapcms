@@ -28,7 +28,7 @@ export const GET: RequestHandler = async ({ params }) => {
 
 		console.log(`processing image src/images/${path}.${params.type}`);
 
-		const buffer = await image.toBuffer();
+		const buffer = await image.toColorspace('srgb').toBuffer();
 		return new Response(new Uint8Array(buffer), {
 			headers: { 'Content-Type': `image/${(await image.metadata()).format}` }
 		});
